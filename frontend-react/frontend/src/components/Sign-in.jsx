@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Bell, Search, Menu, Book, MessageCircle, Building, Users } from 'lucide-react';
-
+import { useAuth } from './AuthProvider';
 const navigationItems = [
   { id: 'courses', label: 'Courses', icon: Book },
   { id: 'forums', label: 'Forums', icon: MessageCircle },
@@ -115,23 +115,85 @@ const RecentActivity = () => (
     </div>
   </div>
 );
-
-const DefenderDen = () => {
-  const [activeTab, setActiveTab] = useState('courses');
-
-  return (
-    <div className="w-full min-h-screen bg-gray-50 flex flex-col">
-      <Navbar activeTab={activeTab} setActiveTab={setActiveTab}/>
-      <div className="flex-1 w-full px-6 py-6 max-w-screen-lg mx-auto">
-        <SearchBar activeTab={navigationItems.find(tab => tab.id === activeTab)?.label || 'content'} />
-        
-        <div className="grid grid-cols-3 gap-6">
-          <FeaturedCourses />
-          <RecentActivity />
+const SignInForm = () => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+  
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      // Logic to handle form submission
+      console.log("Submitted Username: ", username);
+      console.log("Submitted Password: ", password);
+    };
+  
+    return (
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+        <h2 className="text-2xl font-semibold text-center mb-4">Sign In</h2>
+  
+        <div className="mb-4">
+          <label htmlFor="username" className="block text-gray-700">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
         </div>
+  
+        <div className="mb-6">
+          <label htmlFor="password" className="block text-gray-700">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+  
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+        >
+          Sign In
+        </button>
+      </form>
+    );
+  };
+  const SignIn = () => {
+    const { signIn, account, signOut, isLoggingIn } = useAuth();
+  
+    return (
+      <div className="w-full min-h-screen bg-gray-50 flex flex-col">
+        <h1 className="text-center text-3xl">Sign In</h1>
+        
+        {/* Microsoft Sign-In Button */}
+        {!account ? (
+          <button
+            disabled={isLoggingIn} 
+            onClick={signIn}
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 w-full max-w-xs mx-auto"
+          >
+            Sign in with Microsoft
+          </button>
+        ) : (
+          <div>
+            <h2>Welcome, {account.username}</h2>
+            <button
+              onClick={signOut}
+              className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 w-full max-w-xs mx-auto"
+            >
+              Sign out
+            </button>
+          </div>
+        )}
       </div>
-    </div>
-  );
-};
-
-export default DefenderDen;
+    );
+  };
+  
+  export default SignIn;
