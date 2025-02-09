@@ -115,7 +115,7 @@ const DefenderDen = () => {
   return (
     <div className="w-full min-h-screen bg-gray-50 flex flex-col">
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab}/>
-      <div className="flex-1 w-full px-6 py-6">
+      <div className="flex-1 w-full px-6 py-6 max-w-screen-lg mx-auto">
         <SearchBar activeTab={navigationItems.find(tab => tab.id === activeTab)?.label || 'content'} />
         
         <div className="grid grid-cols-3 gap-6">
