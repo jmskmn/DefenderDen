@@ -1,6 +1,7 @@
 import os 
 from flask_cors import CORS
 from flask import Flask
+import click 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -24,11 +25,15 @@ def create_app(test_config=None):
     @app.route('/hello')
     def hello():
         return 'Hello, World!'
+    from . import classes
+    app.cli.add_command(classes.test_add)
 
     from . import db
     db.init_app(app)
 
     from . import auth
     app.register_blueprint(auth.bp)
+
+
 
     return app
