@@ -28,9 +28,9 @@ def add_class_code(class_name,code,number):
             current_app.config['DATABASE'],
             detect_types=sqlite3.PARSE_DECLTYPES
         )
-    g.db.execute('''
+    db.execute('''
             INSERT INTO class_code (class_name, code, number) 
             VALUES (?, ?, ?)
         ''', (class_name, code, number))
-    g.db.commit()
+    db.commit()
     
